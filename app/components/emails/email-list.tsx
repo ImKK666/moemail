@@ -235,8 +235,8 @@ export function EmailList({ onEmailSelect, selectedEmailId }: EmailListProps) {
       </div>
 
       {emails.map(email => (
-        <div className="flex items-center gap-2">
-        <SendEmailDialog emailAddress={email.address} emailId={email.id} />
+        <div key={email.id} className="flex items-center gap-2">
+          <SendEmailDialog emailAddress={email.address} emailId={email.id} />
           <Button
             variant="ghost"
             size="icon"
@@ -244,8 +244,8 @@ export function EmailList({ onEmailSelect, selectedEmailId }: EmailListProps) {
             onClick={(e) => {
               e.stopPropagation()
               setEmailToDelete(email)
-              }}
-            >
+            }}
+          >
             <Trash2 className="h-4 w-4 text-destructive" />
           </Button>
         </div>

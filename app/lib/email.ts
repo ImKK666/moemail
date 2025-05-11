@@ -25,7 +25,11 @@ export async function sendEmail({ to, subject, text, html, from }: SendEmailOpti
         react: React.createElement('div', { dangerouslySetInnerHTML: { __html: html } }),
       });
 
-      // 错误处理...
+      if (error) {
+        console.error('Failed to send email:', error);
+        throw new Error(error.message);
+      }
+
       return { id: data?.id, success: true };
     } 
     // 当只有纯文本内容时
@@ -37,7 +41,11 @@ export async function sendEmail({ to, subject, text, html, from }: SendEmailOpti
         react: React.createElement('pre', null, text),
       });
 
-      // 错误处理...
+      if (error) {
+        console.error('Failed to send email:', error);
+        throw new Error(error.message);
+      }
+      
       return { id: data?.id, success: true };
     }
     

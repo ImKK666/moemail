@@ -12,9 +12,6 @@ import { SentMessageList } from "./sent-message-list"
 import { SentMessageView } from "./sent-message-view"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-const [messageListTab, setMessageListTab] = useState<"inbox" | "sent">("inbox")
-const [selectedSentMessageId, setSelectedSentMessageId] = useState<string | null>(null)
-
 interface Email {
   id: string
   address: string
@@ -24,6 +21,8 @@ export function ThreeColumnLayout() {
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null)
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null)
   const { copyToClipboard } = useCopy()
+  const [messageListTab, setMessageListTab] = useState<"inbox" | "sent">("inbox")
+  const [selectedSentMessageId, setSelectedSentMessageId] = useState<string | null>(null)
 
   const columnClass = "border-2 border-primary/20 bg-background rounded-lg overflow-hidden flex flex-col"
   const headerClass = "p-2 border-b-2 border-primary/20 flex items-center justify-between shrink-0"
