@@ -155,6 +155,11 @@ export function EmailList({ onEmailSelect, selectedEmailId }: EmailListProps) {
     }
   }
 
+  // 查找当前选中的邮箱
+  const selectedEmail = selectedEmailId 
+    ? emails.find(email => email.id === selectedEmailId) 
+    : null
+
   if (!session) return null
 
   return (
@@ -179,7 +184,15 @@ export function EmailList({ onEmailSelect, selectedEmailId }: EmailListProps) {
               )}
             </span>
           </div>
-          <CreateDialog onEmailCreated={handleRefresh} />
+          <div className="flex items-center gap-2">
+            {selectedEmail && (
+              <SendEmailDialog 
+                emailAddress={selectedEmail.address} 
+                emailId={selectedEmail.id} 
+              />
+            )}
+            <CreateDialog onEmailCreated={handleRefresh} />
+          </div>
         </div>
         
         <div className="flex-1 overflow-auto p-2" onScroll={handleScroll}>
@@ -234,23 +247,6 @@ export function EmailList({ onEmailSelect, selectedEmailId }: EmailListProps) {
         </div>
       </div>
 
-      {emails.map(email => (
-        <div key={email.id} className="flex items-center gap-2">
-          <SendEmailDialog emailAddress={email.address} emailId={email.id} />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="opacity-0 group-hover:opacity-100 h-8 w-8"
-            onClick={(e) => {
-              e.stopPropagation()
-              setEmailToDelete(email)
-            }}
-          >
-            <Trash2 className="h-4 w-4 text-destructive" />
-          </Button>
-        </div>
-      ))}
-
       <AlertDialog open={!!emailToDelete} onOpenChange={() => setEmailToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -272,4 +268,4 @@ export function EmailList({ onEmailSelect, selectedEmailId }: EmailListProps) {
       </AlertDialog>
     </>
   )
-} 
+}
