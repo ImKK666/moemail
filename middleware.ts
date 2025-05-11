@@ -11,6 +11,7 @@ const API_PERMISSIONS: Record<string, Permission> = {
   '/api/roles/promote': PERMISSIONS.PROMOTE_USER,
   '/api/config': PERMISSIONS.MANAGE_CONFIG,
   '/api/api-keys': PERMISSIONS.MANAGE_API_KEY,
+  '/api/emails/send': PERMISSIONS.SEND_EMAIL,
 }
 
 export async function middleware(request: Request) {

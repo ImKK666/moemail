@@ -105,6 +105,27 @@ export const apiKeys = sqliteTable('api_keys', {
   nameUserIdUnique: uniqueIndex('name_user_id_unique').on(table.name, table.userId)
 }));
 
+export const sentMessages = sqliteTable("sent_message", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  emailId: text("emailId")
+    .notNull()
+    .references(() => emails.id, { onDelete: "cascade" }),
+  toAddress: text("to_address").notNull(),
+  subject: text("subject").notNull(),
+  content: text("content").notNull(),
+  html: text("html"),
+  sentAt: integer("sent_at", { mode: "timestamp_ms" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  status: text("status").notNull(), // "sent", "failed", "pending"
+  error: text("error"),
+})
+
+export const emailsRelations = relations(emails, ({ many }) => ({
+  receivedMessages: many(messages),
+  sentMessages: many(sentMessages),
+}));
+
 export const apiKeysRelations = relations(apiKeys, ({ one }) => ({
   user: one(users, {
     fields: [apiKeys.userId],

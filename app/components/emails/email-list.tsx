@@ -22,6 +22,7 @@ import {
 import { ROLES } from "@/lib/permissions"
 import { useUserRole } from "@/hooks/use-user-role"
 import { useConfig } from "@/hooks/use-config"
+import { SendEmailDialog } from "./send-email-dialog";
 
 interface Email {
   id: string
@@ -232,6 +233,23 @@ export function EmailList({ onEmailSelect, selectedEmailId }: EmailListProps) {
           )}
         </div>
       </div>
+
+      {emails.map(email => (
+        <div className="flex items-center gap-2">
+        <SendEmailDialog emailAddress={email.address} emailId={email.id} />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="opacity-0 group-hover:opacity-100 h-8 w-8"
+            onClick={(e) => {
+              e.stopPropagation()
+              setEmailToDelete(email)
+              }}
+            >
+            <Trash2 className="h-4 w-4 text-destructive" />
+          </Button>
+        </div>
+      ))}
 
       <AlertDialog open={!!emailToDelete} onOpenChange={() => setEmailToDelete(null)}>
         <AlertDialogContent>

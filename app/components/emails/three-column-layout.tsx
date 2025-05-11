@@ -8,6 +8,13 @@ import { cn } from "@/lib/utils"
 import { useCopy } from "@/hooks/use-copy"
 import { Copy } from "lucide-react"
 
+import { SentMessageList } from "./sent-message-list"
+import { SentMessageView } from "./sent-message-view"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+const [messageListTab, setMessageListTab] = useState<"inbox" | "sent">("inbox")
+const [selectedSentMessageId, setSelectedSentMessageId] = useState<string | null>(null)
+
 interface Email {
   id: string
   address: string
@@ -70,12 +77,27 @@ export function ThreeColumnLayout() {
             </h2>
           </div>
           {selectedEmail && (
-            <div className="flex-1 overflow-auto">
-              <MessageList
-                email={selectedEmail}
-                onMessageSelect={setSelectedMessageId}
-                selectedMessageId={selectedMessageId}
-              />
+            <div className="flex-1 overflow-hidden flex flex-col">
+              <Tabs value={messageListTab} onValueChange={(v) => setMessageListTab(v as "inbox" | "sent")}>
+                <TabsList className="w-full">
+                  <TabsTrigger value="inbox" className="flex-1">收件箱</TabsTrigger>
+                  <TabsTrigger value="sent" className="flex-1">已发送</TabsTrigger>
+                </TabsList>
+                <TabsContent value="inbox" className="flex-1 overflow-auto">
+                  <MessageList
+                    email={selectedEmail}
+                    onMessageSelect={setSelectedMessageId}
+                    selectedMessageId={selectedMessageId}
+                  />
+                </TabsContent>
+                <TabsContent value="sent" className="flex-1 overflow-auto">
+                  <SentMessageList
+                    email={selectedEmail}
+                    onMessageSelect={setSelectedSentMessageId}
+                    selectedMessageId={selectedSentMessageId}
+                  />
+                </TabsContent>
+              </Tabs>
             </div>
           )}
         </div>
@@ -83,15 +105,24 @@ export function ThreeColumnLayout() {
         <div className={cn("col-span-5", columnClass)}>
           <div className={headerClass}>
             <h2 className={titleClass}>
-              {selectedMessageId ? "邮件内容" : "选择邮件查看详情"}
+              {selectedMessageId || selectedSentMessageId ? "邮件内容" : "选择邮件查看详情"}
             </h2>
           </div>
-          {selectedEmail && selectedMessageId && (
+          {selectedEmail && selectedMessageId && messageListTab === "inbox" && (
             <div className="flex-1 overflow-auto">
               <MessageView
                 emailId={selectedEmail.id}
                 messageId={selectedMessageId}
                 onClose={() => setSelectedMessageId(null)}
+              />
+            </div>
+          )}
+          {selectedEmail && selectedSentMessageId && messageListTab === "sent" && (
+            <div className="flex-1 overflow-auto">
+              <SentMessageView
+                emailId={selectedEmail.id}
+                messageId={selectedSentMessageId}
+                onClose={() => setSelectedSentMessageId(null)}
               />
             </div>
           )}

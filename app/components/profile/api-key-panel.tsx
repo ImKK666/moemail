@@ -409,6 +409,40 @@ export function ApiKeyPanel() {
                         </pre>
                       </div>
 
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="text-sm font-medium">发送邮件</div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => copyToClipboard(
+                              `curl -X POST ${window.location.protocol}//${window.location.host}/api/emails/send \\
+                      -H "X-API-Key: YOUR_API_KEY" \\
+                      -H "Content-Type: application/json" \\
+                      -d '{
+                        "emailId": "your-email-id",
+                        "to": "recipient@example.com",
+                        "subject": "Hello from MoeMail",
+                        "content": "This is a test email sent via API."
+                      }'`
+                            )}
+                          >
+                            <Copy className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <pre className="text-xs bg-muted/50 rounded-lg p-4 overflow-x-auto">
+                          {`curl -X POST ${window.location.protocol}//${window.location.host}/api/emails/send \\
+                      -H "X-API-Key: YOUR_API_KEY" \\
+                      -H "Content-Type: application/json" \\
+                      -d '{
+                        "emailId": "your-email-id",
+                        "to": "recipient@example.com",
+                        "subject": "Hello from MoeMail",
+                        "content": "This is a test email sent via API."
+                      }'`}
+                        </pre>
+                      </div>
+
                       <div className="text-xs text-muted-foreground mt-4">
                         <p>注意：</p>
                         <ul className="list-disc list-inside space-y-1 mt-2">

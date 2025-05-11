@@ -13,6 +13,7 @@ export const PERMISSIONS = {
   PROMOTE_USER: 'promote_user',
   MANAGE_CONFIG: 'manage_config',
   MANAGE_API_KEY: 'manage_api_key',
+  SEND_EMAIL: 'send_email',
 } as const;
 
 export type Permission = typeof PERMISSIONS[keyof typeof PERMISSIONS];
@@ -23,10 +24,12 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     PERMISSIONS.MANAGE_EMAIL,
     PERMISSIONS.MANAGE_WEBHOOK,
     PERMISSIONS.MANAGE_API_KEY,
+    PERMISSIONS.SEND_EMAIL,
   ],
   [ROLES.KNIGHT]: [
     PERMISSIONS.MANAGE_EMAIL,
     PERMISSIONS.MANAGE_WEBHOOK,
+    PERMISSIONS.SEND_EMAIL,
   ],
   [ROLES.CIVILIAN]: [],
 } as const;
